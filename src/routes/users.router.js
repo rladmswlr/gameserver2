@@ -92,7 +92,8 @@ router.post('/sign-in', async (req, res, next) => {
     );
 
     res.cookie('authorization', `Bearer ${token}`);
-
+    //res.header('authorization', `Bearer ${token}`);
+    
     return res.status(200).json({ message: '로그인 성공했습니다.' });
   } catch (err) {
     next(err);

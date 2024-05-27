@@ -88,11 +88,16 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.ItemsScalarFieldEnum = {
-  itemId: 'itemId',
-  name: 'name',
+  item_code: 'item_code',
+  item_name: 'item_name',
+  item_price: 'item_price'
+};
+
+exports.Prisma.ItemStatsScalarFieldEnum = {
+  itemStatId: 'itemStatId',
+  Item_Code: 'Item_Code',
   health: 'health',
-  power: 'power',
-  price: 'price'
+  power: 'power'
 };
 
 exports.Prisma.SortOrder = {
@@ -100,14 +105,10 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
-
 
 exports.Prisma.ModelName = {
-  Items: 'Items'
+  Items: 'Items',
+  ItemStats: 'ItemStats'
 };
 /**
  * Create the Client
@@ -147,6 +148,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -155,13 +157,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./item\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"ITEM_DATABASE_URL\")\n}\n\nmodel Items {\n  itemId Int    @id @default(autoincrement()) @map(\"item_id\")\n  name   String @unique @map(\"name\")\n  health Int?   @map(\"health\")\n  power  Int?   @map(\"power\")\n  price  Int    @map(\"price\")\n\n  @@map(\"items\")\n}\n",
-  "inlineSchemaHash": "95184c5aeccd15b5fbb67f5436e9825f4b993ad30d29162f429e7dda4e3fb381",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./item\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"ITEM_DATABASE_URL\")\n}\n\nmodel Items {\n  item_code Int        @id @default(autoincrement()) @map(\"item_code\")\n  item_name String     @unique @map(\"item_name\")\n  item_stat ItemStats?\n\n  item_price Int @map(\"item_price\")\n\n  @@map(\"Items\")\n}\n\nmodel ItemStats {\n  itemStatId Int @id @default(autoincrement()) @map(\"item_stat_id\")\n  Item_Code  Int @unique @map(\"Item_Code\")\n  health     Int @default(0) @map(\"health\")\n  power      Int @default(0) @map(\"power\")\n\n  item Items @relation(fields: [Item_Code], references: [item_code], onDelete: Cascade)\n\n  @@map(\"ItemStats\")\n}\n",
+  "inlineSchemaHash": "428c187c27f8c4f1c39f5d6f4de5533179df201437ad57d9cea1f15c947706b4",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Items\":{\"dbName\":\"items\",\"fields\":[{\"name\":\"itemId\",\"dbName\":\"item_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"dbName\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"health\",\"dbName\":\"health\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"power\",\"dbName\":\"power\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"price\",\"dbName\":\"price\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Items\":{\"dbName\":\"Items\",\"fields\":[{\"name\":\"item_code\",\"dbName\":\"item_code\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"item_name\",\"dbName\":\"item_name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"item_stat\",\"kind\":\"object\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"ItemStats\",\"relationName\":\"ItemStatsToItems\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"item_price\",\"dbName\":\"item_price\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"ItemStats\":{\"dbName\":\"ItemStats\",\"fields\":[{\"name\":\"itemStatId\",\"dbName\":\"item_stat_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"Item_Code\",\"dbName\":\"Item_Code\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"health\",\"dbName\":\"health\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":0,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"power\",\"dbName\":\"power\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"default\":0,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"item\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Items\",\"relationName\":\"ItemStatsToItems\",\"relationFromFields\":[\"Item_Code\"],\"relationToFields\":[\"item_code\"],\"relationOnDelete\":\"Cascade\",\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 
