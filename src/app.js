@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import UsersRouter from './routes/users.router.js';
+import ItemsRouter from './routes/items.router.js';
 import logMiddleware from './middlewares/log.middleware.js';
 import errorHandlingMiddleware from './middlewares/error-handling.middleware.js';
 
@@ -10,7 +11,7 @@ const PORT = process.env.PORT_NUMBER;
 app.use(logMiddleware);
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api', [UsersRouter]);
+app.use('/api', [UsersRouter,ItemsRouter]);
 app.use(errorHandlingMiddleware);
 
 app.listen(PORT, () => {
