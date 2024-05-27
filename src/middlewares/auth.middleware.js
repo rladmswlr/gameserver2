@@ -13,7 +13,7 @@ export default async function (req, res, next) {
     if (tokenType !== 'Bearer')
       throw new Error('토큰 타입이 일치하지 않습니다.');
 
-    const decodedToken = jwt.verify(token, 'customized_secret_key');
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const user = await userPrisma.users.findFirst({
