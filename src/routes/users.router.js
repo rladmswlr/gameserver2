@@ -87,7 +87,8 @@ router.post('/sign-in', async (req, res, next) => {
       {
         userId: user.userId,
       },
-      process.env.SECRET_KEY
+      process.env.SECRET_KEY,
+      { expiresIn: '1h' }
     );
 
     res.cookie('authorization', `Bearer ${token}`);
@@ -132,28 +133,132 @@ router.get('/users', authMiddleware, async (req, res, next) => {
 /* 캐릭터 생성 API */
 router.post('/characters', authMiddleware, async (req, res, next) => {
   try {
-    const {name} = req.body;
-    const {userId} = req.user;
+    const { name } = req.body;
+    const { userId } = req.user;
 
     //아이디 중복체크 확인 부분
     const isExistCharacter = await userPrisma.characters.findFirst({
-        where: { name },
-        });
-        if (isExistCharacter) {
-            return res.status(409).json({ message: '이미 존재하는 닉네임 입니다.' });
-        }
+      where: { name },
+    });
+    if (isExistCharacter) {
+      return res.status(409).json({ message: '이미 존재하는 닉네임 입니다.' });
+    }
     const newCharacter = await userPrisma.characters.create({
-        data: {
-            UserId: userId,
-            name: name,
-            health: 500,
-            power: 100,
-            money: 10000
-        },
+      data: {
+        UserId: userId,
+        name: name,
+        health: 500,
+        power: 100,
+        money: 10000,
+      },
     });
 
+    return res.status(200).json({ newCharacterId: newCharacter.characterId });
+  } catch (err) {
+    next(err);
+  }
+});
 
-    return res.status(200).json({ newCharacterId : newCharacter.characterId});
+//캐릭터 삭제 API(JWT 인증 필요)**
+//입문 과제에서 했던 것과 동일하게 캐릭터를 삭제하는 API가 필요합니다.
+//내 계정에 있는 캐릭터가 아니라면 삭제시키면 안되겠죠?
+
+router.delete(
+  '/characters/:characterId',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { characterId } = req.params;
+      const { userId } = req.user;
+
+      const ischaracter = await userPrisma.characters.findFirst({
+        where: {
+          characterId: +characterId,
+          UserId: +userId,
+        },
+      });
+
+      if (!ischaracter) {
+        return res
+          .status(404)
+          .json({ errorMessage: '캐릭터가 존재하지 않습니다.' });
+      }
+
+      await userPrisma.characters.delete({
+        where: { characterId: +characterId },
+      });
+
+      return res.status(200).json({ Message: `캐릭터가 삭제되었습니다.` });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get('/characters/:characterId', async (req, res, next) => {
+  try {
+    const { characterId } = req.params;
+    const { authorization } = req.cookies;
+
+    console.log(authorization);
+
+    //로그인을 안한경우
+    if (!authorization ) {
+      const character = await userPrisma.characters.findFirst({
+        where: {
+          characterId: +characterId,
+        },
+      });
+
+      if (!character) {
+        return res
+          .status(404)
+          .json({ errorMessage: '캐릭터가 존재하지 않습니다.' });
+      }
+
+      return res.status(200).json({
+        name: character.name,
+        health: character.health,
+        power: character.power,
+      });
+    }
+
+    // 로그인 한 경우
+    const [tokenType, token] = authorization.split(' ');
+
+    if (tokenType !== 'Bearer') {
+      return res.status(401).json({ message: '토큰 타입이 일치하지 않습니다.' });
+    }
+
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const userId = decodedToken.userId;
+
+    const character = await userPrisma.characters.findFirst({
+      where: {
+        characterId: +characterId,
+      },
+    });
+
+    if (!character) {
+      return res.status(404).json({ message: '캐릭터를 찾을 수 없습니다.' });
+    }
+
+    // 내 캐릭터 조회
+    if (character.UserId === userId) {
+      return res.status(200).json({
+        name: character.name,
+        health: character.health,
+        power: character.power,
+        money: character.money,
+      });
+    } else {
+      // 다른 유저가 조회
+      return res.status(200).json({
+        name: character.name,
+        health: character.health,
+        power: character.power,
+      });
+    }
   } catch (err) {
     next(err);
   }
