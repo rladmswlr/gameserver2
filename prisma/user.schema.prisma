@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./user"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("USER_DATABASE_URL")
+}
+
+model Users {
+  userId     Int         @id @default(autoincrement()) @map("userId")
+  id         String      @unique @map("id")
+  password   String      @map("password")
+  name       String      @map("name")
+  createdAt  DateTime    @default(now()) @map("createdAt")
+  updatedAt  DateTime    @updatedAt @map("updatedAt")
+  Characters Characters?
+
+  @@map("Users")
+}
+
+model Characters {
+  characterId Int      @id @default(autoincrement()) @map("characterId")
+  UserId      Int      @unique @map("UserId")
+  name        String   @unique @map("name")
+  health      Int      @map("health")
+  power       Int      @map("power")
+  money       Int      @map("money")
+  createdAt   DateTime @default(now()) @map("createdAt")
+  updatedAt   DateTime @updatedAt @map("updatedAt")
+  User        Users    @relation(fields: [UserId], references: [userId], onDelete: Cascade)
+
+  @@map("Characters")
+}

@@ -1,7 +1,7 @@
 // src/middlewares/auth.middleware.js
 
 import jwt from 'jsonwebtoken';
-import { prisma } from '../utils/prisma/index.js';
+import { userPrisma } from '../utils/prisma/index.js';
 
 export default async function (req, res, next) {
   try {
@@ -16,7 +16,7 @@ export default async function (req, res, next) {
     const decodedToken = jwt.verify(token, 'customized_secret_key');
     const userId = decodedToken.userId;
 
-    const user = await prisma.users.findFirst({
+    const user = await userPrisma.users.findFirst({
       where: { userId: +userId },
     });
     if (!user) {

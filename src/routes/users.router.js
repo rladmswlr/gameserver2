@@ -1,5 +1,5 @@
 import express from 'express';
-import {prisma} from '../utils/prisma/index.js';
+import {userPrisma} from '../utils/prisma/index.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import authMiddleware from '../middlewares/auth.middleware.js';
@@ -12,7 +12,7 @@ router.post('/sign-up', async(req, res, next) => {
     const {id, password , passwordCheck, name} = req.body;
 
     //이메일 중복체크 확인 부분
-    const isExistUser = await prisma.users.findFirst({
+    const isExistUser = await userPrisma.users.findFirst({
         where: {id},
     });
     if(isExistUser){
@@ -28,7 +28,7 @@ router.post('/sign-up', async(req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //비밀번호는 암호화된 비밀번호로 저장
-    const user = await prisma.users.create({
+    const user = await userPrisma.users.create({
         data: {
             id, 
             password: hashedPassword,
@@ -47,7 +47,7 @@ router.post('/sign-in', async(req, res, next) => {
 
     const {id, password} = req.body;
 
-    const user = await prisma.users.findFirst({ where: {id}});
+    const user = await userPrisma.users.findFirst({ where: {id}});
 
     if(!user){
         return res.status(401).json({message: '존재하지 않는 아이디입니다.'});
@@ -75,7 +75,7 @@ router.post('/sign-in', async(req, res, next) => {
 router.get('/users', authMiddleware,async(req, res,next)=>{
     const {userId} = req.user;
 
-    const user = await prisma.users.findFirst({
+    const user = await userPrisma.users.findFirst({
         where: {userId: +userId},
         //특정 컬럼만 조회하는 파라미터
         select:{
