@@ -951,6 +951,36 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type UsersCountOutputType
+   */
+
+  export type UsersCountOutputType = {
+    Characters: number
+  }
+
+  export type UsersCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Characters?: boolean | UsersCountOutputTypeCountCharactersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UsersCountOutputType without action
+   */
+  export type UsersCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsersCountOutputType
+     */
+    select?: UsersCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UsersCountOutputType without action
+   */
+  export type UsersCountOutputTypeCountCharactersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharactersWhereInput
+  }
+
 
   /**
    * Models
@@ -1163,6 +1193,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     Characters?: boolean | Users$CharactersArgs<ExtArgs>
+    _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
   export type UsersSelectScalar = {
@@ -1177,13 +1208,14 @@ export namespace Prisma {
 
   export type UsersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Characters?: boolean | Users$CharactersArgs<ExtArgs>
+    _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
   export type $UsersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Users"
     objects: {
-      Characters: Prisma.$CharactersPayload<ExtArgs> | null
+      Characters: Prisma.$CharactersPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: number
@@ -1557,7 +1589,7 @@ export namespace Prisma {
   export interface Prisma__UsersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    Characters<T extends Users$CharactersArgs<ExtArgs> = {}>(args?: Subset<T, Users$CharactersArgs<ExtArgs>>): Prisma__CharactersClient<$Result.GetResult<Prisma.$CharactersPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+    Characters<T extends Users$CharactersArgs<ExtArgs> = {}>(args?: Subset<T, Users$CharactersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharactersPayload<ExtArgs>, T, 'findMany'> | Null>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1904,6 +1936,11 @@ export namespace Prisma {
      */
     include?: CharactersInclude<ExtArgs> | null
     where?: CharactersWhereInput
+    orderBy?: CharactersOrderByWithRelationInput | CharactersOrderByWithRelationInput[]
+    cursor?: CharactersWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CharactersScalarFieldEnum | CharactersScalarFieldEnum[]
   }
 
   /**
@@ -3003,7 +3040,7 @@ export namespace Prisma {
     name?: StringFilter<"Users"> | string
     createdAt?: DateTimeFilter<"Users"> | Date | string
     updatedAt?: DateTimeFilter<"Users"> | Date | string
-    Characters?: XOR<CharactersNullableRelationFilter, CharactersWhereInput> | null
+    Characters?: CharactersListRelationFilter
   }
 
   export type UsersOrderByWithRelationInput = {
@@ -3013,7 +3050,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    Characters?: CharactersOrderByWithRelationInput
+    Characters?: CharactersOrderByRelationAggregateInput
   }
 
   export type UsersWhereUniqueInput = Prisma.AtLeast<{
@@ -3026,7 +3063,7 @@ export namespace Prisma {
     name?: StringFilter<"Users"> | string
     createdAt?: DateTimeFilter<"Users"> | Date | string
     updatedAt?: DateTimeFilter<"Users"> | Date | string
-    Characters?: XOR<CharactersNullableRelationFilter, CharactersWhereInput> | null
+    Characters?: CharactersListRelationFilter
   }, "userId" | "id">
 
   export type UsersOrderByWithAggregationInput = {
@@ -3084,18 +3121,18 @@ export namespace Prisma {
 
   export type CharactersWhereUniqueInput = Prisma.AtLeast<{
     characterId?: number
-    UserId?: number
     name?: string
     AND?: CharactersWhereInput | CharactersWhereInput[]
     OR?: CharactersWhereInput[]
     NOT?: CharactersWhereInput | CharactersWhereInput[]
+    UserId?: IntFilter<"Characters"> | number
     health?: IntFilter<"Characters"> | number
     power?: IntFilter<"Characters"> | number
     money?: IntFilter<"Characters"> | number
     createdAt?: DateTimeFilter<"Characters"> | Date | string
     updatedAt?: DateTimeFilter<"Characters"> | Date | string
     User?: XOR<UsersRelationFilter, UsersWhereInput>
-  }, "characterId" | "UserId" | "name">
+  }, "characterId" | "name">
 
   export type CharactersOrderByWithAggregationInput = {
     characterId?: SortOrder
@@ -3133,7 +3170,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Characters?: CharactersCreateNestedOneWithoutUserInput
+    Characters?: CharactersCreateNestedManyWithoutUserInput
   }
 
   export type UsersUncheckedCreateInput = {
@@ -3143,7 +3180,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Characters?: CharactersUncheckedCreateNestedOneWithoutUserInput
+    Characters?: CharactersUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UsersUpdateInput = {
@@ -3152,7 +3189,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Characters?: CharactersUpdateOneWithoutUserNestedInput
+    Characters?: CharactersUpdateManyWithoutUserNestedInput
   }
 
   export type UsersUncheckedUpdateInput = {
@@ -3162,7 +3199,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Characters?: CharactersUncheckedUpdateOneWithoutUserNestedInput
+    Characters?: CharactersUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UsersCreateManyInput = {
@@ -3300,9 +3337,14 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type CharactersNullableRelationFilter = {
-    is?: CharactersWhereInput | null
-    isNot?: CharactersWhereInput | null
+  export type CharactersListRelationFilter = {
+    every?: CharactersWhereInput
+    some?: CharactersWhereInput
+    none?: CharactersWhereInput
+  }
+
+  export type CharactersOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UsersCountOrderByAggregateInput = {
@@ -3441,16 +3483,18 @@ export namespace Prisma {
     money?: SortOrder
   }
 
-  export type CharactersCreateNestedOneWithoutUserInput = {
-    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput
-    connect?: CharactersWhereUniqueInput
+  export type CharactersCreateNestedManyWithoutUserInput = {
+    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput> | CharactersCreateWithoutUserInput[] | CharactersUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput | CharactersCreateOrConnectWithoutUserInput[]
+    createMany?: CharactersCreateManyUserInputEnvelope
+    connect?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
   }
 
-  export type CharactersUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput
-    connect?: CharactersWhereUniqueInput
+  export type CharactersUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput> | CharactersCreateWithoutUserInput[] | CharactersUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput | CharactersCreateOrConnectWithoutUserInput[]
+    createMany?: CharactersCreateManyUserInputEnvelope
+    connect?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3461,14 +3505,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type CharactersUpdateOneWithoutUserNestedInput = {
-    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput
-    upsert?: CharactersUpsertWithoutUserInput
-    disconnect?: CharactersWhereInput | boolean
-    delete?: CharactersWhereInput | boolean
-    connect?: CharactersWhereUniqueInput
-    update?: XOR<XOR<CharactersUpdateToOneWithWhereWithoutUserInput, CharactersUpdateWithoutUserInput>, CharactersUncheckedUpdateWithoutUserInput>
+  export type CharactersUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput> | CharactersCreateWithoutUserInput[] | CharactersUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput | CharactersCreateOrConnectWithoutUserInput[]
+    upsert?: CharactersUpsertWithWhereUniqueWithoutUserInput | CharactersUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CharactersCreateManyUserInputEnvelope
+    set?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    disconnect?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    delete?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    connect?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    update?: CharactersUpdateWithWhereUniqueWithoutUserInput | CharactersUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CharactersUpdateManyWithWhereWithoutUserInput | CharactersUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CharactersScalarWhereInput | CharactersScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -3479,14 +3527,18 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type CharactersUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput
-    upsert?: CharactersUpsertWithoutUserInput
-    disconnect?: CharactersWhereInput | boolean
-    delete?: CharactersWhereInput | boolean
-    connect?: CharactersWhereUniqueInput
-    update?: XOR<XOR<CharactersUpdateToOneWithWhereWithoutUserInput, CharactersUpdateWithoutUserInput>, CharactersUncheckedUpdateWithoutUserInput>
+  export type CharactersUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput> | CharactersCreateWithoutUserInput[] | CharactersUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CharactersCreateOrConnectWithoutUserInput | CharactersCreateOrConnectWithoutUserInput[]
+    upsert?: CharactersUpsertWithWhereUniqueWithoutUserInput | CharactersUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CharactersCreateManyUserInputEnvelope
+    set?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    disconnect?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    delete?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    connect?: CharactersWhereUniqueInput | CharactersWhereUniqueInput[]
+    update?: CharactersUpdateWithWhereUniqueWithoutUserInput | CharactersUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CharactersUpdateManyWithWhereWithoutUserInput | CharactersUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CharactersScalarWhereInput | CharactersScalarWhereInput[]
   }
 
   export type UsersCreateNestedOneWithoutCharactersInput = {
@@ -3621,34 +3673,39 @@ export namespace Prisma {
     create: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput>
   }
 
-  export type CharactersUpsertWithoutUserInput = {
-    update: XOR<CharactersUpdateWithoutUserInput, CharactersUncheckedUpdateWithoutUserInput>
-    create: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput>
-    where?: CharactersWhereInput
+  export type CharactersCreateManyUserInputEnvelope = {
+    data: CharactersCreateManyUserInput | CharactersCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
-  export type CharactersUpdateToOneWithWhereWithoutUserInput = {
-    where?: CharactersWhereInput
+  export type CharactersUpsertWithWhereUniqueWithoutUserInput = {
+    where: CharactersWhereUniqueInput
+    update: XOR<CharactersUpdateWithoutUserInput, CharactersUncheckedUpdateWithoutUserInput>
+    create: XOR<CharactersCreateWithoutUserInput, CharactersUncheckedCreateWithoutUserInput>
+  }
+
+  export type CharactersUpdateWithWhereUniqueWithoutUserInput = {
+    where: CharactersWhereUniqueInput
     data: XOR<CharactersUpdateWithoutUserInput, CharactersUncheckedUpdateWithoutUserInput>
   }
 
-  export type CharactersUpdateWithoutUserInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    health?: IntFieldUpdateOperationsInput | number
-    power?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type CharactersUpdateManyWithWhereWithoutUserInput = {
+    where: CharactersScalarWhereInput
+    data: XOR<CharactersUpdateManyMutationInput, CharactersUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type CharactersUncheckedUpdateWithoutUserInput = {
-    characterId?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    health?: IntFieldUpdateOperationsInput | number
-    power?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type CharactersScalarWhereInput = {
+    AND?: CharactersScalarWhereInput | CharactersScalarWhereInput[]
+    OR?: CharactersScalarWhereInput[]
+    NOT?: CharactersScalarWhereInput | CharactersScalarWhereInput[]
+    characterId?: IntFilter<"Characters"> | number
+    UserId?: IntFilter<"Characters"> | number
+    name?: StringFilter<"Characters"> | string
+    health?: IntFilter<"Characters"> | number
+    power?: IntFilter<"Characters"> | number
+    money?: IntFilter<"Characters"> | number
+    createdAt?: DateTimeFilter<"Characters"> | Date | string
+    updatedAt?: DateTimeFilter<"Characters"> | Date | string
   }
 
   export type UsersCreateWithoutCharactersInput = {
@@ -3701,11 +3758,54 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CharactersCreateManyUserInput = {
+    characterId?: number
+    name: string
+    health: number
+    power: number
+    money: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CharactersUpdateWithoutUserInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    health?: IntFieldUpdateOperationsInput | number
+    power?: IntFieldUpdateOperationsInput | number
+    money?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharactersUncheckedUpdateWithoutUserInput = {
+    characterId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    health?: IntFieldUpdateOperationsInput | number
+    power?: IntFieldUpdateOperationsInput | number
+    money?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharactersUncheckedUpdateManyWithoutUserInput = {
+    characterId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    health?: IntFieldUpdateOperationsInput | number
+    power?: IntFieldUpdateOperationsInput | number
+    money?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
 
 
   /**
    * Aliases for legacy arg types
    */
+    /**
+     * @deprecated Use UsersCountOutputTypeDefaultArgs instead
+     */
+    export type UsersCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UsersCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use UsersDefaultArgs instead
      */

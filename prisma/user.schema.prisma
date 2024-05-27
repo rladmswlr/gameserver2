@@ -15,14 +15,14 @@ model Users {
   name       String      @map("name")
   createdAt  DateTime    @default(now()) @map("createdAt")
   updatedAt  DateTime    @updatedAt @map("updatedAt")
-  Characters Characters?
+  Characters Characters[]
 
   @@map("Users")
 }
 
 model Characters {
   characterId Int      @id @default(autoincrement()) @map("characterId")
-  UserId      Int      @unique @map("UserId")
+  UserId      Int      @map("UserId")
   name        String   @unique @map("name")
   health      Int      @map("health")
   power       Int      @map("power")

@@ -9,20 +9,20 @@ datasource db {
 }
 
 model Users {
-  userId     Int         @id @default(autoincrement()) @map("userId")
-  id         String      @unique @map("id")
-  password   String      @map("password")
-  name       String      @map("name")
-  createdAt  DateTime    @default(now()) @map("createdAt")
-  updatedAt  DateTime    @updatedAt @map("updatedAt")
-  Characters Characters?
+  userId     Int          @id @default(autoincrement()) @map("userId")
+  id         String       @unique @map("id")
+  password   String       @map("password")
+  name       String       @map("name")
+  createdAt  DateTime     @default(now()) @map("createdAt")
+  updatedAt  DateTime     @updatedAt @map("updatedAt")
+  Characters Characters[]
 
   @@map("Users")
 }
 
 model Characters {
   characterId Int      @id @default(autoincrement()) @map("characterId")
-  UserId      Int      @unique @map("UserId")
+  UserId      Int      @map("UserId")
   name        String   @unique @map("name")
   health      Int      @map("health")
   power       Int      @map("power")
