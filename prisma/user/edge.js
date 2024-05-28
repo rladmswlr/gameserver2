@@ -154,6 +154,10 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -179,8 +183,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./user\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"USER_DATABASE_URL\")\n}\n\nmodel Users {\n  userId     Int          @id @default(autoincrement()) @map(\"userId\")\n  id         String       @unique @map(\"id\")\n  password   String       @map(\"password\")\n  name       String       @map(\"name\")\n  createdAt  DateTime     @default(now()) @map(\"createdAt\")\n  updatedAt  DateTime     @updatedAt @map(\"updatedAt\")\n  Characters Characters[]\n\n  @@map(\"Users\")\n}\n\nmodel Characters {\n  characterId Int      @id @default(autoincrement()) @map(\"characterId\")\n  UserId      Int      @map(\"UserId\")\n  name        String   @unique @map(\"name\")\n  health      Int      @map(\"health\")\n  power       Int      @map(\"power\")\n  money       Int      @map(\"money\")\n  createdAt   DateTime @default(now()) @map(\"createdAt\")\n  updatedAt   DateTime @updatedAt @map(\"updatedAt\")\n  User        Users    @relation(fields: [UserId], references: [userId], onDelete: Cascade)\n\n  Inventory  Inventory[]\n  EquipItems EquipItems[]\n\n  @@map(\"Characters\")\n}\n\nmodel Inventory {\n  inventoryId Int @id @default(autoincrement()) @map(\"inventoryId\")\n  CharacterId Int @map(\"CharacterId\")\n  item_code   Int @map(\"item_code\")\n  count       Int @map(\"count\")\n\n  Character Characters @relation(fields: [CharacterId], references: [characterId], onDelete: Cascade)\n\n  @@map(\"Inventory\")\n}\n\nmodel EquipItems {\n  equipItemId Int @id @default(autoincrement()) @map(\"equipItemId\")\n  CharacterId Int @map(\"CharacterId\")\n  item_code   Int @map(\"item_code\")\n\n  Character Characters @relation(fields: [CharacterId], references: [characterId], onDelete: Cascade)\n\n  @@map(\"EquipItems\")\n}\n",
-  "inlineSchemaHash": "11b2fbb6e9e27e818ed5f53fc1ed810fe624ad21a2901b5ae313221586bcfce4",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./user\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"USER_DATABASE_URL\")\n}\n\nmodel Users {\n  userId     Int          @id @default(autoincrement()) @map(\"userId\")\n  id         String       @unique @map(\"id\")\n  password   String       @map(\"password\")\n  name       String       @map(\"name\")\n  createdAt  DateTime     @default(now()) @map(\"createdAt\")\n  updatedAt  DateTime     @updatedAt @map(\"updatedAt\")\n  Characters Characters[]\n\n  @@map(\"Users\")\n}\n\nmodel Characters {\n  characterId Int      @id @default(autoincrement()) @map(\"characterId\")\n  UserId      Int      @map(\"UserId\")\n  name        String   @unique @map(\"name\")\n  health      Int      @map(\"health\")\n  power       Int      @map(\"power\")\n  money       Int      @map(\"money\")\n  createdAt   DateTime @default(now()) @map(\"createdAt\")\n  updatedAt   DateTime @updatedAt @map(\"updatedAt\")\n  User        Users    @relation(fields: [UserId], references: [userId], onDelete: Cascade)\n\n  Inventory  Inventory[]\n  EquipItems EquipItems[]\n\n  @@map(\"Characters\")\n}\n\nmodel Inventory {\n  inventoryId Int @id @default(autoincrement()) @map(\"inventoryId\")\n  CharacterId Int @map(\"CharacterId\")\n  item_code   Int @map(\"item_code\")\n  count       Int @map(\"count\")\n\n  Character Characters @relation(fields: [CharacterId], references: [characterId], onDelete: Cascade)\n\n  @@map(\"Inventory\")\n}\n\nmodel EquipItems {\n  equipItemId Int @id @default(autoincrement()) @map(\"equipItemId\")\n  CharacterId Int @map(\"CharacterId\")\n  item_code   Int @map(\"item_code\")\n\n  Character Characters @relation(fields: [CharacterId], references: [characterId], onDelete: Cascade)\n\n  @@map(\"EquipItems\")\n}\n",
+  "inlineSchemaHash": "21bc26b3e82879166c716d98526bf2977059c749cd185f8be084407b8d5a96be",
   "copyEngine": true
 }
 config.dirname = '/'
