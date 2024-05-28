@@ -4,11 +4,14 @@ import UsersRouter from './routes/users.router.js';
 import ItemsRouter from './routes/items.router.js';
 import MartRouter from './routes/mart.router.js';
 import CharacterRouter from './routes/character.router.js';
+import dotEnv from 'dotenv'; 
 import logMiddleware from './middlewares/log.middleware.js';
 import errorHandlingMiddleware from './middlewares/error-handling.middleware.js';
 
+dotEnv.config();
+
 const app = express();
-const PORT = 3019;
+const PORT = process.env.PORT_NUMBER;
 
 app.use(logMiddleware);
 app.use(express.json());

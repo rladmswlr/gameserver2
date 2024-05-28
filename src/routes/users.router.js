@@ -4,8 +4,11 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import authMiddleware from '../middlewares/auth.middleware.js';
 import { Prisma } from '@prisma/client';
+import dotEnv from 'dotenv'; 
 
 const router = express.Router();
+
+dotEnv.config();
 
 /* 사용자 회원가입 API */
 router.post('/sign-up', async (req, res, next) => {

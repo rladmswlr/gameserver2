@@ -1,10 +1,14 @@
 // src/middlewares/auth.middleware.js
 
+import dotEnv from 'dotenv'; 
 import jwt from 'jsonwebtoken';
 import { userPrisma } from '../utils/prisma/index.js';
 
 export default async function (req, res, next) {
   try {
+
+    dotEnv.config();
+
     const authorization = req.header('authorization')
 
     if (!authorization) throw new Error('토큰이 존재하지 않습니다.');
