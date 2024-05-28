@@ -87,14 +87,13 @@ router.post('/sign-in', async (req, res, next) => {
       {
         userId: user.userId,
       },
-      process.env.SECRET_KEY,
-      { expiresIn: '1h' }
+      process.env.SECRET_KEY
     );
 
-    res.cookie('authorization', `Bearer ${token}`);
+    //res.cookie('authorization', `Bearer ${token}`);
     //res.header('authorization', `Bearer ${token}`);
     
-    return res.status(200).json({ message: '로그인 성공했습니다.' });
+    return res.status(200).json({ message: token });
   } catch (err) {
     next(err);
   }
@@ -120,6 +119,12 @@ router.get('/users', authMiddleware, async (req, res, next) => {
             health: true,
             power: true,
             money: true,
+            Inventory: {
+              select: {
+                item_code: true,
+                count : true
+              }
+            }
           },
         },
       },
@@ -164,10 +169,7 @@ router.post('/characters', authMiddleware, async (req, res, next) => {
 //입문 과제에서 했던 것과 동일하게 캐릭터를 삭제하는 API가 필요합니다.
 //내 계정에 있는 캐릭터가 아니라면 삭제시키면 안되겠죠?
 
-router.delete(
-  '/characters/:characterId',
-  authMiddleware,
-  async (req, res, next) => {
+router.delete('/characters/:characterId',authMiddleware,async (req, res, next) => {
     try {
       const { characterId } = req.params;
       const { userId } = req.user;
@@ -199,9 +201,7 @@ router.delete(
 router.get('/characters/:characterId', async (req, res, next) => {
   try {
     const { characterId } = req.params;
-    const { authorization } = req.cookies;
-
-    console.log(authorization);
+    const authorization = req.header('authorization');
 
     //로그인을 안한경우
     if (!authorization ) {

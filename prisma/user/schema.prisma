@@ -10,11 +10,11 @@ datasource db {
 
 model Users {
   userId     Int          @id @default(autoincrement()) @map("userId")
+  id         String       @unique @map("id")
   password   String       @map("password")
   name       String       @map("name")
   createdAt  DateTime     @default(now()) @map("createdAt")
   updatedAt  DateTime     @updatedAt @map("updatedAt")
-  id         String       @unique @map("id")
   Characters Characters[]
 
   @@map("Users")
@@ -31,6 +31,29 @@ model Characters {
   updatedAt   DateTime @updatedAt @map("updatedAt")
   User        Users    @relation(fields: [UserId], references: [userId], onDelete: Cascade)
 
-  @@index([UserId], map: "Characters_UserId_fkey")
+  Inventory  Inventory[]
+  EquipItems EquipItems[]
+
   @@map("Characters")
+}
+
+model Inventory {
+  inventoryId Int @id @default(autoincrement()) @map("inventoryId")
+  CharacterId Int @map("CharacterId")
+  item_code   Int @map("item_code")
+  count       Int @map("count")
+
+  Character Characters @relation(fields: [CharacterId], references: [characterId], onDelete: Cascade)
+
+  @@map("Inventory")
+}
+
+model EquipItems {
+  equipItemId Int @id @default(autoincrement()) @map("equipItemId")
+  CharacterId Int @map("CharacterId")
+  item_code   Int @map("item_code")
+
+  Character Characters @relation(fields: [CharacterId], references: [characterId], onDelete: Cascade)
+
+  @@map("EquipItems")
 }
