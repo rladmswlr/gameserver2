@@ -1,3 +1,44 @@
+**MySQL을 사용한 아이템 시뮬레이터**<br/>
+
+ERD 구현<br/>
+데이터베이스는 User와 Item 두개를 사용하였습니다.<br/>
+**User 모델 구현**<br/>
+![Untitled (1)](https://github.com/rladmswlr/gameserver2/assets/37393922/a851b40e-1839-471e-a5fe-c4c35dbd391d)
+**Item 모델 구현**<br/>
+![Untitled (2)](https://github.com/rladmswlr/gameserver2/assets/37393922/1be737ce-ef8f-4cca-b87f-aaeada970853)
+
+
+🛠️ **Tech Stack: 백엔드 기술 스택**
+1. **웹 프레임워크**
+Node.js의 대표적인 웹 프레임워크인 **Express**를 이용합니다.
+2. **패키지 매니저**
+yarn을 이용합니다.
+3. **모듈 시스템**
+ES6 부터 도입 된 모듈 시스템(**ESModule, type: "module"**)을 이용합니다.
+4. **데이터베이스**
+숙련 주차 강의 후반에서 다룬 **MySQL**을 사용합니다. <br/>
+직접 설치하지 않고, Cloud 서비스인 **AWS RDS**를 이용합니다.<br/>
+6. **ORM(Object Relational Mapping)**
+MySQL의 데이터를 쉽게 읽고 쓰게 해주는 [Prisma](https://www.prisma.io/)를 사용합니다.<br/>
+
+**구현한 API**
+1. 회원가입 API v <br/>
+2. 로그인 API v <br/>
+3. 캐릭터 생성 API v <br/>
+4. 캐릭터 삭제 API v <br/>
+5. 캐릭터 상세 조회 API v <br/>
+6. 아이템 생성 API v <br/>
+7. 아이템 수정 API v <br/>
+8. 아이템 목록 조회 API v <br/>
+9. 아이템 상세 조회 API v <br/>
+10. 아이템 구입 API v <br/>
+11. 아이템 판매 API v <br/>
+12. 캐릭터가 보유한 인벤토리 내 아이템 목록 조회 API v <br/>
+13. 캐릭터가 장착한 아이템 목록 조회 API v <br/>
+14. 아이템 장착 API v <br/>
+15. 아이템 탈착 API v <br/>
+16. 게임 머니를 버는 API v <br/>
+
 ❓ **Why: 과제 제출시에는 아래 질문과 답변을 저장소의 README.md 파일에 추가해서 제출해 주세요.**
 
 1. **암호화 방식**<br/>
